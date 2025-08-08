@@ -1,43 +1,37 @@
 import os
 
 class Config:
-    # HOST = "Your Host"
-    # PORT = "Your Port"
-    # RELOAD = "Your Reload"
-    # WORKERS = "Your Workers",
-    # LIMIT_CONCURRENCY = "Your Limit Concurrency"
-    
-    HOST = "0.0.0.0"
-    PORT = 28000
-    RELOAD = True
-    WORKERS = 8,
-    LIMIT_CONCURRENCY = 1000
-    
+    HOST = os.getenv("HOST")
+    PORT = int(os.getenv("PORT"))
+    RELOAD = os.getenv("RELOAD")
+    WORKERS = int(os.getenv("WORKERS"))
+    LIMIT_CONCURRENCY = os.getenv("LIMIT_CONCURRENCY")
+
     # Database Connection Settings
-    DB_HOST = "210.110.250.32"
-    DB_PORT = 22465
-    DB_USER = "sysailab612"
-    DB_PASSWORD = "sysailab@612"
-    DB_NAME = "profile"
-    DB_MAX_CONNECTIONS = 10
-    DB_CONNECTION_TIMEOUT = 30
-    DB_READ_TIMEOUT = 30
-    DB_WRITE_TIMEOUT = 30
-    
+    DB_HOST = os.getenv("DB_HOST")
+    DB_PORT = int(os.getenv("DB_PORT"))
+    DB_USER = os.getenv("DB_USER")
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DB_NAME = os.getenv("DB_NAME")
+    DB_MAX_CONNECTIONS = int(os.getenv("DB_MAX_CONNECTIONS"))
+    DB_CONNECTION_TIMEOUT = int(os.getenv("DB_CONNECTION_TIMEOUT"))
+    DB_READ_TIMEOUT = int(os.getenv("DB_READ_TIMEOUT"))
+    DB_WRITE_TIMEOUT = int(os.getenv("DB_WRITE_TIMEOUT"))
+
     # Redis Connection Settings
-    REDIS_HOST = "10.109.237.71"
-    REDIS_PORT = 6379
-    REDIS_PASSWORD = "sysailab@612"
-    REDIS_CONNECTION_TIMEOUT = 10
-    REDIS_SOCKET_TIMEOUT = 5
-    REDIS_HEALTH_CHECK_INTERVAL = 30
-    
+    REDIS_HOST = os.getenv("REDIS_HOST")
+    REDIS_PORT = int(os.getenv("REDIS_PORT"))
+    REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
+    REDIS_CONNECTION_TIMEOUT = int(os.getenv("REDIS_CONNECTION_TIMEOUT"))
+    REDIS_SOCKET_TIMEOUT = int(os.getenv("REDIS_SOCKET_TIMEOUT"))
+    REDIS_HEALTH_CHECK_INTERVAL = int(os.getenv("REDIS_HEALTH_CHECK_INTERVAL"))
+
     # Cache Settings
-    CACHE_DEFAULT_TTL = 30  # seconds
-    CACHE_MAX_TTL = 3600    # 1 hour
+    CACHE_DEFAULT_TTL = int(os.getenv("CACHE_DEFAULT_TTL"))
+    CACHE_MAX_TTL = int(os.getenv("CACHE_MAX_TTL"))
 
 config = Config()
-    
+
 instance_config_path = os.path.join(os.path.dirname(__file__), 'instance', 'config.py')
 if os.path.exists(instance_config_path):
     instance_config = {}
