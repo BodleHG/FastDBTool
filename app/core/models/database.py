@@ -232,6 +232,56 @@ class DBManager:
             
         return sql
             
-        
+    def glb_by_scenario(self, _id: int)    :
+        sql = f"""
+                SELECT
+                    s.id                 AS scenario_id,
+                    s.name               AS scenario_name,
+                    s.description        AS scenario_desc,
+
+                    a.id                 AS agent_id,
+                    a.name               AS agent_name,
+                    a.description        AS agent_desc,
+                    aglb.id              AS agent_glb_id,      
+
+                    t.id                 AS terrian_id,
+                    t.name               AS terrian_name,
+                    t.description        AS terrian_desc,
+                    tglb.id              AS terrian_glb_id, 
+
+                    e.id                 AS env_id,
+                    e.name               AS env_name,
+                    e.weather_type,
+                    e.lighting_intensity,
+                    e.sun_angle,
+                    e.temperature,
+                    e.rain_intensity,
+                    e.visibility,
+                    e.wave_height,
+                    e.wave_speed,
+                    e.wave_direction_ns,
+                    e.wave_direction_we,
+                    e.wave_clarity,
+                    e.buoyancy_strength,
+                    e.sea_level
+
+                FROM 
+                    Scenario s
+                LEFT JOIN 
+                    Scenario_Agent sa ON sa.scenario_id = s.id
+                LEFT JOIN Agent a ON a.id = sa.agent_id
+                LEFT JOIN GLB aglb ON aglb.id = a.glb_id
+
+                LEFT JOIN Scenario_Terrian st ON st.scenario_id = s.id
+                LEFT JOIN Terrian t ON t.id = st.terrian_id
+                LEFT JOIN GLB tglb ON tglb.id = t.glb_id
+
+                LEFT JOIN Scenario_Environment se  ON se.scenario_id = s.id
+                LEFT JOIN Environment e ON e.id = se.env_id
+
+                WHERE s.id = {_id}
+                ORDER BY a.id, t.id, e.id;
+        """
+        return sql
         
     

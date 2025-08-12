@@ -16,6 +16,11 @@ router = APIRouter()
 
 @router.post("/read/")
 async def read(dbquery: DBSelect):    
+    """
+    지정된 테이블, 컬럼, 필터 조건에 따라 데이터를 조회합니다.
+    우선 캐시(예: Redis)에서 데이터를 검색하고, 없을 경우 DB에서 조회 후 캐시에 저장합니다.
+    조회 결과가 없으면 실패 메시지를 반환합니다.
+    """
     try:
         dict_data: dict = dict(dbquery)
         
@@ -107,9 +112,22 @@ async def get_data_by_glb(
         result = db_manager.get_data(_sql=sql)
         if not result:
             return {"error": "데이터를 찾을 수 없습니다."}
-        return {"data": result}
+        return ResponseFormat.sql_success(result)
     except Exception as e:
         return {"error": f"알 수 없는 오류 발생: {str(e)}"}
 
   
-  
+@router.get("/scenario-by-glb/")
+async def get_scenario_by_glb(
+    id: int
+):
+    try:
+        sql = db_manager.glb_by_scenario(_id=id)
+        if not sql:
+            return {"error": "SQL 생성에 실패했습니다."}
+        result = db_manager.get_data(_sql=sql)
+        if not result:
+            return {"error": "데이터를 찾을 수 없습니다."}
+        return ResponseFormat.sql_success(result)
+    except Exception as e:
+        return {"error": f"알 수 없는 오류 발생: {str(e)}"}
